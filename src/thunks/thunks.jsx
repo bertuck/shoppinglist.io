@@ -37,7 +37,7 @@ export const login = (name, password) => dispatch => {
                     dispatch(_getDocumentUser());
                 })
                 .catch(function (error) {
-                    alert('login fail');
+                    dispatch({ type: 'SHOWMODAL', payload: {title: 'Error', text : "Error Connexion"} });
                     alertSyncFail(error.message)
                 });
         })
@@ -52,9 +52,9 @@ export const logout = () => dispatch => {
     firebaseGlobal.auth().signOut().then(function() {
         dispatch({ type: 'LOGOUT'});
         currentUser = null;
-        alert("Logout");
+        dispatch({ type: 'SHOWMODAL', payload: {title: 'LOGOUT', text : "Vous etes deconnecté"} });
     }).catch(function(error) {
-        alert("Error Logout");
+        dispatch({ type: 'SHOWMODAL', payload: {title: 'Error', text : "Error Connexion"} });
     });
     dispatch({ type: 'SYNC_END'});
 };
@@ -84,6 +84,10 @@ export const deleteItem = (idx) => dispatch => {
     if (error) dispatch(alertSyncFail(err.message));
 };
 
+export const toggleModal = (show) => dispatch => {
+    dispatch({ type: 'TOGGLEMODAL', payload: {show}});
+};
+
 export const alertSyncFail = message => dispatch => {
     dispatch({ type: 'SYNC_FAIL', payload: {message} });
     delay(1000).then(() => dispatch({ type: 'SYNC_END'}));
@@ -92,10 +96,10 @@ export const alertSyncFail = message => dispatch => {
 const _getDocumentUser = () => dispatch => {
     if (currentUser) {
         const shippingListRef = shoppingList.doc(currentUser.uid);
-        shippingListRef.get().then(function (list) {
-            if (list._document) {
-                const data = list.data();
-                dispatch({type: 'LOGIN', payload: data});
+        shippingListRef.get().then(function (store) {
+            if (store._document) {
+                const data = store.data();
+                dispatch({type: 'LOGIN', payload: { data: data, email: currentUser.email }});
                 return;
             }
             const data = null;

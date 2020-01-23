@@ -1,10 +1,13 @@
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+import '../src/assets/css/style.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 import * as firebase from "firebase/app";
-
 import "firebase/auth";
 import "firebase/firestore"
 
@@ -17,7 +20,13 @@ import Accueil from "../src/components/Accueil.jsx";
 const defaultStore = {
     'init': false,
     'isLogin': false,
+    'showModal': false,
+    'modal': {
+        "title": '',
+        "text": ''
+    },
     'name': 'Fruits',
+    'email': '',
     'items': {
         '0': 'banana',
         '1': 'apple',

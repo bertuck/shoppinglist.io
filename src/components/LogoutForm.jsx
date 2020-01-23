@@ -12,7 +12,9 @@ class LogoutForm extends React.Component {
     }
     render() {
         return (
-           <button onClick={this.logout.bind(this)}>Logout</button>
+            <div className="btn-center">
+                <button className="btn3 logout" onClick={this.logout.bind(this)}>Logout</button>
+            </div>
         );
     }
 }

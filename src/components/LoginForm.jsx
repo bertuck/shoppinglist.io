@@ -24,15 +24,17 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.formPreventDefault}>
-                <div className="container">
-                    <label htmlFor="uname"><b>Username</b></label>
-                    <input id="name" type="text" placeholder="Enter Username" name="uname" required/><br/>
-                    <label htmlFor="psw"><b>Password</b></label>
-                    <input id="password" type="password" placeholder="Enter Password" name="psw" required/><br/>
-                    <button onClick={this.submitLoginForm.bind(this)}>Login</button>
+            <div className="login-page">
+                <div className="form">
+                    <form onSubmit={this.formPreventDefault}>
+                        <label htmlFor="uname"><b>Username</b></label>
+                        <input id="name" type="text" placeholder="Enter Username" name="uname" required/><br/>
+                        <label htmlFor="psw"><b>Password</b></label>
+                        <input id="password" type="password" placeholder="Enter Password" name="psw" required/><br/>
+                        <button onClick={this.submitLoginForm.bind(this)}>Login</button>
+                    </form>
                 </div>
-            </form>
+            </div>
         );
     }
 }
