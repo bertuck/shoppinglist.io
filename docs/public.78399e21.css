@@ -138,23 +138,39 @@ ul {
     padding-inline-start: 0;
 }
 
-.btn2 {
-    color: #ffffff;
-    padding: 0.5rem;
-    border-radius: 4px;
-    width: 200px;
-    margin : auto;
-    background-color: #000a6e;
+.container-todo {
+    max-width: 800px;
+    margin: auto;
+    padding: 10px;
 }
 
-.shopping-item {
-    list-style: none;
-    width: 240px;
-    margin: auto;
-    margin-bottom: 5px;
-    padding: 20px;
-    border: 1px solid black;
-    background-color: #e8e8ee;
+.txtb {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #000;
+    background: none;
+    padding: 10px;
+    outline: none;
+    font-size: 18px;
+}
+
+.task {
+    width: 100%;
+    background: rgba(255,255,255,0.5);
+    padding: 18px;
+    margin: 6px 0;
+    overflow: hidden;
+}
+
+.task i{
+    float: right;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.comp .task{
+    background: rgba(0,0,0,.5);
+    color: #fff;
 }
 
 .btn2:hover {
@@ -171,12 +187,16 @@ ul {
 }
 
 .btn3 {
-    color: #ffffff;
-    padding: 0.5rem;
-    border-radius: 4px;
-    width: 200px;
-    margin : auto;
-    background-color: #ff0e00;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #ff6f00;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .btn3:hover {
@@ -185,10 +205,12 @@ ul {
 
 .account {
     padding: 20px;
+    background-color: #f0f0f6;
     border: 1px solid black;
     width: 230px;
     float: right;
     margin: 10px;
+    border-radius: 10px;
 }
 
 .add {
@@ -199,6 +221,116 @@ ul {
     border-radius: 4px;
 }
 
+.container-loading {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    width: 100vw;
+}
 
+.loading {
+    font-size: 10px;
+    margin: 50px auto;
+    text-indent: -9999em;
+    width: 11em;
+    height: 11em;
+    border-radius: 50%;
+    background: #ffffff;
+    background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+    position: relative;
+    -webkit-animation: load3 1.4s infinite linear;
+    animation: load3 1.4s infinite linear;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+.loading:before {
+    width: 50%;
+    height: 50%;
+    background: #ffffff;
+    border-radius: 100% 0 0 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+}
+.loading:after {
+    background: #e8e8ee;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    content: '';
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+@-webkit-keyframes load3 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes load3 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+/* Add a black background color to the top navigation */
+.topnav-container {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav li {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav li:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add an active class to highlight the current page */
+.topnav li.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+    display: none;
+}
 
 /*# sourceMappingURL=/public.78399e21.css.map */
