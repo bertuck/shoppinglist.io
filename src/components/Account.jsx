@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LogoutForm from "./LogoutForm";
 
-class Account extends React.Component {
+class Account extends Component {
     constructor(props) {
         super(props);
     }
@@ -17,7 +17,7 @@ class Account extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    email: state.email,
+    email: state.user.email,
 });
 
 export default connect(mapStateToProps)(Account);

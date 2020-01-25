@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from "../thunks/thunks.jsx";
 
-
-class LoginForm extends React.Component {
+class LoginForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { name: '', password : '' };
+        this.state = { email: '', password : '' };
+        this.handleEmail = this.handleEmail.bind(this);
+        this.handlePassword = this.handlePassword.bind(this);
     }
-    componentDidMount() {
-        this.state.name = document.querySelector('#name');
-        this.state.password = document.querySelector('#password');
-    }
+
+    handleEmail(e) {
+        this.setState({email: e.target.value })
+    };
+
+    handlePassword(e) {
+        this.setState({password: e.target.value })
+    };
 
     formPreventDefault(e) {
         e.preventDefault();
@@ -19,7 +24,7 @@ class LoginForm extends React.Component {
 
     submitLoginForm(e) {
         e.preventDefault();
-        this.props.login(this.state.name.value, this.state.password.value);
+        this.props.login(this.state.email, this.state.password);
     }
 
     render() {
@@ -27,10 +32,10 @@ class LoginForm extends React.Component {
             <div className="login-page">
                 <div className="form">
                     <form onSubmit={this.formPreventDefault}>
-                        <label htmlFor="uname"><b>Username</b></label>
-                        <input id="name" type="text" placeholder="Enter Username" name="uname" required/><br/>
+                        <label htmlFor="email"><b>Email</b></label>
+                        <input id="email" type="text" placeholder="Enter Email" name="email" required  onChange={this.handleEmail}/><br/>
                         <label htmlFor="psw"><b>Password</b></label>
-                        <input id="password" type="password" placeholder="Enter Password" name="psw" required/><br/>
+                        <input id="password" type="password" placeholder="Enter Password" name="psw" required  onChange={this.handlePassword}/><br/>
                         <button onClick={this.submitLoginForm.bind(this)}>Login</button>
                     </form>
                 </div>

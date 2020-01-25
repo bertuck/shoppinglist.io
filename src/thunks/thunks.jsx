@@ -1,10 +1,5 @@
-const delay = t => new Promise(r => setTimeout(r, t));
-
 let firebaseGlobal = null;
-let db = null;
-let shoppingList = null;
 let currentUser = null;
-
 export const init = (firebase) => (dispatch, getState) => {
     firebaseGlobal = firebase;
     dispatch({ type: 'INIT_BEGIN' });
@@ -19,26 +14,30 @@ export const init = (firebase) => (dispatch, getState) => {
     };
     // Initialize Firebase
     firebaseGlobal.initializeApp(firebaseConfig);
-    db = firebaseGlobal.firestore();
-    shoppingList = db.collection("shoppinglist");
     firebaseGlobal.auth().onAuthStateChanged((authUser) => {
         currentUser = authUser;
-        dispatch(_getDocumentUser());
+        if (currentUser) {
+            dispatch({ type: 'LOGIN', payload: {email: currentUser.email, uid : currentUser.uid} });
+            dispatch(_getDataUser());
+            dispatch({ type: 'SHOWMODAL', payload: {title: 'Login', text : "You are now connected"} });
+        } else {
+            dispatch({ type: 'INIT_END' });
+        }
     });
 };
 
-export const login = (name, password) => dispatch => {
+export const login = (email, password) => (dispatch, getState) => {
     dispatch({ type: 'SYNC_START'});
     firebaseGlobal.auth().setPersistence(firebaseGlobal.auth.Auth.Persistence.LOCAL)
         .then(function() {
-            firebaseGlobal.auth().signInWithEmailAndPassword(name, password)
+            firebaseGlobal.auth().signInWithEmailAndPassword(email, password)
                 .then((result) => {
-                    currentUser = result.user;
-                    dispatch(_getDocumentUser());
+                    dispatch({ type: 'LOGIN', payload: {email: currentUser.email, uid : currentUser.uid} });
+                    dispatch(_getDataUser());
+                    dispatch({ type: 'SHOWMODAL', payload: {title: 'Login', text : "You are now connected"} });
                 })
                 .catch(function (error) {
-                    dispatch({ type: 'SHOWMODAL', payload: {title: 'Error', text : "Error Connexion"} });
-                    alertSyncFail(error.message)
+                    dispatch({ type: 'SHOWMODAL', payload: {title: 'Error Login', text : "Email or password incorrect"} });
                 });
         })
         .catch(function(error) {
@@ -52,60 +51,48 @@ export const logout = () => dispatch => {
     firebaseGlobal.auth().signOut().then(function() {
         dispatch({ type: 'LOGOUT'});
         currentUser = null;
-        dispatch({ type: 'SHOWMODAL', payload: {title: 'LOGOUT', text : "Vous etes deconnecté"} });
     }).catch(function(error) {
         dispatch({ type: 'SHOWMODAL', payload: {title: 'Error', text : "Error Connexion"} });
     });
     dispatch({ type: 'SYNC_END'});
 };
 
-export const save = () => (dispatch, getState) => {
+export const saveData = (data) => (dispatch, getState) => {
     let error = false;
     dispatch({ type: 'SYNC_START'});
-    shoppingList.doc(currentUser.uid).set(getState());
-    dispatch({ type: 'SAVE' });
+    let user = { ...getState().user, data: data };
+    dispatch(_setDataUser(user));
     dispatch({ type: 'SYNC_END' });
     if (error) dispatch(alertSyncFail(err.message));
 };
 
-export const addItem = (idx, product) => dispatch => {
-    let error = false;
-    dispatch({ type: 'SYNC_START'});
-    dispatch({ type: 'ADD', payload: {idx, product}});
-    dispatch({ type: 'SYNC_END'});
-    if (error) dispatch(alertSyncFail(err.message));
-};
-
-export const deleteItem = (idx) => dispatch => {
-    let error = false;
-    dispatch({ type: 'SYNC_START'});
-    dispatch({ type: 'DELETE', payload: {idx}});
-    dispatch({ type: 'SYNC_END'});
-    if (error) dispatch(alertSyncFail(err.message));
-};
-
-export const toggleModal = (show) => dispatch => {
-    dispatch({ type: 'TOGGLEMODAL', payload: {show}});
+export const toggleModal = show => dispatch => {
+    dispatch({ type: 'TOGGLEMODAL', payload: {show: show} });
 };
 
 export const alertSyncFail = message => dispatch => {
     dispatch({ type: 'SYNC_FAIL', payload: {message} });
-    delay(1000).then(() => dispatch({ type: 'SYNC_END'}));
 };
 
-const _getDocumentUser = () => dispatch => {
+const _setDataUser = (user) =>  (dispatch, getState) => {
+    const dataList = firebaseGlobal.firestore().collection("shoppinglist");
+    dataList.doc(currentUser.uid).set(user);
+    dispatch({ type: 'SAVE_DATA', payload: { user: user } });
+};
+
+const _getDataUser = () => dispatch => {
     if (currentUser) {
-        const shippingListRef = shoppingList.doc(currentUser.uid);
-        shippingListRef.get().then(function (store) {
+        const dataList = firebaseGlobal.firestore().collection("shoppinglist");
+        const dataRef = dataList.doc(currentUser.uid);
+        dataRef.get().then(function (store) {
             if (store._document) {
-                const data = store.data();
-                dispatch({type: 'LOGIN', payload: { data: data, email: currentUser.email }});
+                const user = store.data();
+                dispatch({type: 'SAVE_DATA', payload: { user: user }});
+                dispatch({ type: 'INIT_END' });
                 return;
             }
-            const data = null;
-            dispatch({type: 'LOGIN', payload: {}});
+            const user = null;
+            dispatch({ type: 'INIT_END' });
         });
-    } else {
-        dispatch({type: 'INIT_END', payload: {}});
     }
 };

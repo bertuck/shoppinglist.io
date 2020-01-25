@@ -1,5 +1,3 @@
-import {showMessage} from "react-native-flash-message";
-
 const initialState = [];
 
 const reducer = (state = initialState, action) => {

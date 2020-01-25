@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logout } from "../thunks/thunks.jsx";
 
 
-class LogoutForm extends React.Component {
+class LogoutForm extends Component {
     constructor(props) {
         super(props);
     }

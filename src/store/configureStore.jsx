@@ -1,17 +1,17 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
-import { reducer as formReducer } from "redux-form";
 
-import generalReducer from "./reducers/general";
-import modalReducer from "./reducers/modal";
-import userReducer from "./reducers/user";
+import appReducer from "./reducers/app.jsx";
+import modalReducer from "./reducers/modal.jsx";
+import userReducer from "./reducers/user.jsx";
 import thunk from "redux-thunk";
+import * as firebase from "firebase";
+import { init } from "../thunks/thunks.jsx";
 
 
 const defaultStore = {
-    'general': {
+    'app': {
         'name': 'App1',
-        'init': false,
-        'isLogin': false,
+        'init': false
     },
     'user': {
         'email': null,
@@ -21,34 +21,24 @@ const defaultStore = {
         ]
     },
     'modal': {
-        'showModal': false,
+        'show': false,
         "title": '',
         "text": ''
-    },
-    'form': {
-        'email': '',
-        'password': ''
     }
 };
 
-
 const rootReducer = combineReducers({
-    form: formReducer,
-    general: generalReducer,
+    app: appReducer,
     modal: modalReducer,
     user: userReducer
-    // app: appReducer,
-    // categories: categoriesReducer,
 });
 
 let composeEnhancers = compose;
-
-if (__DEV__) {
-    composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-}
 
 export const store = createStore(
     rootReducer,
     defaultStore,
     composeEnhancers(applyMiddleware(thunk))
 );
+
+store.dispatch(init(firebase));

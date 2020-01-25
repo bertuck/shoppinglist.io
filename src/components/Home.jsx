@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LoginForm from "./LoginForm.jsx";
-import ShoppingList from "./ShoppingList.jsx";
+import TodoList from "./TodoList.jsx";
+import CustomModal from "./CustomModal";
+import Account from "./Account";
 
 
 class Home extends Component {
@@ -9,16 +11,15 @@ class Home extends Component {
         super(props);
     }
     render() {
-        if (!this.props.isLogin && this.props.init) return (<LoginForm  />);
-        else if (this.props.isLogin && this.props.init) return (<ShoppingList />);
-        else return (<div></div>)
+        if (!this.props.uid && this.props.init) return (<div><LoginForm  /><CustomModal /></div>);
+        else if (this.props.uid && this.props.init) return (<div><Account /><TodoList /><CustomModal /></div>);
     }
 }
 
 const mapStateToProps = state => ({
-    init: state.init,
-    isLogin: state.isLogin
+    init: state.app.init,
+    uid: state.user.uid
 });
 
-export default connect(mapStateToProps)(Accueil);
+export default connect(mapStateToProps)(Home);
 // Example usage: <Page />

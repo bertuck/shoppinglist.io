@@ -3,22 +3,15 @@ import { connect } from 'react-redux';
 import {saveData} from "../thunks/thunks";
 
 
-class ShoppingItem extends Component {
-    remove(i) {
-        const results = this.props.data.slice();
-        results.splice(i, 1);
-        this.props.saveData(results);
-        this.setState({data: results })
-    };
+class Task extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
+        let remove = this.props.remove;
         return (
-            <li className="shopping-item">
-                <p className="text-center">{this.props.name}</p>
-                <div className="btn-center">
-                    <button onClick={() => this.remove(this.props.idx)} className="btn3">Delete</button>
-                </div>
-            </li>
+            <div className="task">{this.props.name}<i className="fas fa-trash-alt" onClick={() => remove(this.props.idx)}></i><i className="fas fa-check"></i></div>
         );
     }
 }
@@ -33,5 +26,5 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingItem);
+export default connect(mapStateToProps, mapDispatchToProps)(Task);
 // Example usage: <ShoppingItem name="carrote" />
