@@ -1,22 +1,25 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
-import '../src/assets/css/style.css';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router } from "react-router-dom";
 import { Provider } from 'react-redux';
+import { store } from "../src/store/Store.jsx";
+import history from "../src/store/History.jsx";
 
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore"
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../src/assets/css/style.css';
 
-import App from "../src/components/App.jsx";
-
-import { store } from "../src/store/configureStore";
+import App from "../src/App.jsx";
 
 /*if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./serviceWorker.js');
 }*/
 
-const rootElement = document.getElementById('root');
-ReactDOM.render(<Provider store={store}><App /></Provider>, rootElement);
+ReactDOM.render((
+    <Provider store={store}>
+        <Router history={history}>
+            <div>
+                <App />
+            </div>
+        </Router>
+    </Provider>
+), document.getElementById('root'));

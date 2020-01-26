@@ -2,15 +2,15 @@ import React, { Component }  from 'react';
 import { connect } from 'react-redux'
 import { Modal } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
-import { toggleModal } from "../thunks/thunks";
+import { toggleModal } from "../thunks/general";
 
 class CustomModal extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        return (
-            <div>
+        if (this.props.ready)
+            return (
                 <Modal show={this.props.show} onHide={() => this.props.toggleModal(false)}>
                     <Modal.Header closeButton>
                         <Modal.Title>{this.props.titleModal}</Modal.Title>
@@ -24,9 +24,10 @@ class CustomModal extends Component {
                         <Button onClick={() => this.props.toggleModal(false)} variant="secondary">Close</Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
-        );
+            );
+        return (<div></div>);
     }
+
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -35,6 +36,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
+    ready: state.app.system.ready,
     show: state.modal.show,
     titleModal: state.modal.title,
     textModal: state.modal.text

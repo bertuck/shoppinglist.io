@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {saveData} from "../thunks/thunks";
+import {saveData} from "../thunks/user";
 
 
 class Task extends Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import {saveData} from "../thunks/thunks";
+import {saveData} from "../thunks/user";
 
 import Task from './Task.jsx';
 
@@ -24,9 +24,8 @@ class TodoList extends Component {
     add(e, i) {
         let notEmpty = this.state.text.trim().length > 0;
         if (e.keyCode == 13 && notEmpty) {
-            console.log(this.state.data);
-            this.props.saveData(this.state.data.concat({key: i, text: this.state.text}));
-            this.setState({text: '', data: this.state.data.concat({key: i, text: this.state.text})});
+            this.props.saveData(this.state.data.concat({id: i, title: this.state.text}));
+            this.setState({text: '', data: this.state.data.concat({id: i, title: this.state.text})});
         }
     };
 
@@ -40,22 +39,26 @@ class TodoList extends Component {
     };
 
     render() {
-        return (
+        if (this.props.uid && this.props.ready)
+            return (
             <div className="container-todo">
                 <div className="notcomp">
                     <h2 className="text-center">TODO LIST</h2>
                     {this.state.data.map((data, index) => {
                         return (
-                            <Task remove={this.remove} idx={index} key={data.key} name={data.text}/>);
+                            <Task remove={this.remove} idx={index} key={data.id} name={data.title}/>);
                     })}
                     <div>
                         <div className="add">
-                            <input type="text" className="txtb" onKeyUp={(e) => this.add(e, Math.random())} onChange={this.handleText}/>
+                            <input type="text" value={this.state.text} className="txtb" onKeyUp={(e) => this.add(e, Math.random())} onChange={this.handleText}/>
                         </div>
                     </div>
                 </div>
             </div>
         );
+        return (
+            <div></div>
+        )
     }
 }
 
@@ -66,7 +69,9 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-    data: state.user.data
+    data: state.user.data,
+    ready: state.app.system.ready,
+    uid: state.user.uid
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
