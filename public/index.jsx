@@ -16,7 +16,7 @@ import App from "../src/App.jsx";
 
 ReactDOM.render((
     <Provider store={store}>
-        <Router history={history}>
+        <Router basename={process.env.PUBLIC_URL} history={history}>
             <div>
                 <App />
             </div>
