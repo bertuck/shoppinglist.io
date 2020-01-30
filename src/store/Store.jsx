@@ -10,12 +10,13 @@ import thunk from "redux-thunk";
 const defaultStore = {
     'app': {
         'system' : {
-            'name': 'App1',
+            'name': 'App2',
             'ready': false,
         },
         'navigation' : [
             { id: "1", title: 'Home', path: "/" },
             { id: "2", title: 'About', path: "/about" },
+            { id: "3", title: 'Logout', path: "/logout" },
         ]
     },
     'user': {

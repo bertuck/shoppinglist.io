@@ -10,7 +10,6 @@ class TodoList extends Component {
         super(props);
         this.state = {
             text: '',
-            data: this.props.data
         };
         this.handleText = this.handleText.bind(this);
         this.add = this.add.bind(this);
@@ -24,18 +23,15 @@ class TodoList extends Component {
     add(e, i) {
         let notEmpty = this.state.text.trim().length > 0;
         if (e.keyCode == 13 && notEmpty) {
-            this.props.saveData(this.state.data.concat({id: i, title: this.state.text}));
-            this.setState({text: '', data: this.state.data.concat({id: i, title: this.state.text})});
+            this.props.saveData(this.props.data.concat({id: i, title: this.state.text}));
+            this.setState({text: ''});
         }
     };
 
     remove(i) {
-        const results = this.state.data.slice();
+        const results = this.props.data.slice();
         results.splice(i, 1);
         this.props.saveData(results);
-        this.setState({
-            data: results
-        });
     };
 
     render() {
@@ -44,7 +40,7 @@ class TodoList extends Component {
             <div className="container-todo">
                 <div className="notcomp">
                     <h2 className="text-center">TODO LIST</h2>
-                    {this.state.data.map((data, index) => {
+                    {this.props.data.map((data, index) => {
                         return (
                             <Task remove={this.remove} idx={index} key={data.id} name={data.title}/>);
                     })}
